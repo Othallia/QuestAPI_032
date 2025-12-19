@@ -20,3 +20,11 @@ class EntryViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : Vie
             nama.isNotBlank() && alamat.isNotBlank() && telpon.isNotBlank()
         }
     }
+
+
+    // Fungsi untuk menangani saat ada perubahan pada text input
+    fun updateUiState(detailSiswa: DetailSiswa) {
+        uiStateSiswa =
+            UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
+    }
+
