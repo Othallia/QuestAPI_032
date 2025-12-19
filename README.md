@@ -10,3 +10,6 @@ data yang tersimpan
 
 tampilan postman
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/bbae4f5f-3c1b-4b80-b44a-ebe7d5134397" />
+
+tampilan database
+![Uploading image.png…]()
