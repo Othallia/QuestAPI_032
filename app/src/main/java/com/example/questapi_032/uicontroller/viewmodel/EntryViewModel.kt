@@ -28,3 +28,17 @@ class EntryViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : Vie
             UIStateSiswa(detailSiswa = detailSiswa, isEntryValid = validasiInput(detailSiswa))
     }
 
+    /* Fungsi untuk menyimpan data yang di-entry */
+    suspend fun addSiswa() {
+        if (validasiInput()) {
+            try {
+                // Di sini kita pakai insertSiswa sesuai yang kita buat di Repository sebelumnya
+                repositoryDataSiswa.insertSiswa(uiStateSiswa.detailSiswa.toDataSiswa())
+                println("Sukses Tambah Data")
+            } catch (e: Exception) {
+                println("Gagal tambah data : ${e.message}")
+            }
+        }
+    }
+}
+
