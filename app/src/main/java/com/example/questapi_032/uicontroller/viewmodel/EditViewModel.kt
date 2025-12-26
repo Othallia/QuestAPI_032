@@ -19,7 +19,6 @@ class EditViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoryDataSiswa: RepositoryDataSiswa
 ) : ViewModel() {
-
     var uiStateSiswa by mutableStateOf(UIStateSiswa())
         private set
 
@@ -27,12 +26,8 @@ class EditViewModel(
 
     init {
         viewModelScope.launch {
-            try {
-                val siswa = repositoryDataSiswa.getSatuSiswa(idSiswa)
-                uiStateSiswa = siswa.toUiStateSiswa(isEntryValid = true)
-            } catch (e: Exception) {
-                println("Error Load Data: ${e.message}")
-            }
+            uiStateSiswa = repositoryDataSiswa.getSatuSiswa(idSiswa)
+                .toUiStateSiswa(true)
         }
     }
 
@@ -51,18 +46,11 @@ class EditViewModel(
 
     suspend fun editSatuSiswa() {
         if (validasiInput(uiStateSiswa.detailSiswa)) {
-            try {
-                val response: Response<Void> = repositoryDataSiswa.editSatuSiswa(
-                    idSiswa,
-                    uiStateSiswa.detailSiswa.toDataSiswa()
-                )
-                if (response.isSuccessful) {
-                    println("Update Sukses: ${response.message()}")
-                } else {
-                    println("Update Gagal: ${response.errorBody()}")
-                }
-            } catch (e: Exception) {
-                println("Update Error: ${e.message}")
+            val call: Response<Void> = repositoryDataSiswa.editSatuSiswa(idSiswa, uiStateSiswa.detailSiswa.toDataSiswa())
+            if (call.isSuccessful) {
+                println("Update Sukses : ${call.message()}")
+            } else {
+                println("Update Error : ${call.errorBody()}")
             }
         }
     }
