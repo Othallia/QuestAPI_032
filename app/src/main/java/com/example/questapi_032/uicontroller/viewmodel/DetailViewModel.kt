@@ -10,54 +10,38 @@ import com.example.questapi_032.modeldata.DataSiswa
 import com.example.questapi_032.repositori.RepositoryDataSiswa
 import com.example.questapi_032.uicontroller.route.DestinasiDetail
 import kotlinx.coroutines.launch
-import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
+import retrofit2.HttpException
 
-sealed interface StatusUiDetail {
-    data class Success(val satusiswa: DataSiswa) : StatusUiDetail
-    object Error : StatusUiDetail
-    object Loading : StatusUiDetail
+sealed interface StatusUIDetail {
+    data class Success(val satusiswa: DataSiswa) : StatusUIDetail
+    object Error : StatusUIDetail
+    object Loading : StatusUIDetail
 }
 
 class DetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val repositoryDataSiswa: RepositoryDataSiswa
 ) : ViewModel() {
-
     private val idSiswa: Int = checkNotNull(savedStateHandle[DestinasiDetail.itemIdArg])
-
-    var statusUiDetail: StatusUiDetail by mutableStateOf(StatusUiDetail.Loading)
+    var statusUIDetail: StatusUIDetail by mutableStateOf(StatusUIDetail.Loading)
         private set
 
-    init {
-        getSatuSiswa()
-    }
+    init { getSatuSiswa() }
 
     fun getSatuSiswa() {
         viewModelScope.launch {
-            statusUiDetail = StatusUiDetail.Loading
-            try {
-                val satusiswa = repositoryDataSiswa.getSatuSiswa(idSiswa)
-                statusUiDetail = StatusUiDetail.Success(satusiswa)
-            } catch (e: IOException) {
-                statusUiDetail = StatusUiDetail.Error
-            } catch (e: HttpException) {
-                statusUiDetail = StatusUiDetail.Error
-            }
+            statusUIDetail = StatusUIDetail.Loading
+            statusUIDetail = try {
+                StatusUIDetail.Success(satusiswa = repositoryDataSiswa.getSatuSiswa(idSiswa))
+            } catch (e: IOException) { StatusUIDetail.Error }
+            catch (e: HttpException) { StatusUIDetail.Error }
         }
     }
 
     suspend fun hapusSatuSiswa() {
-        try {
-            val response: Response<Void> = repositoryDataSiswa.hapusSatuSiswa(idSiswa)
-            if (response.isSuccessful) {
-                println("Sukses Hapus Data: ${response.message()}")
-            } else {
-                println("Gagal Hapus Data: ${response.errorBody()}")
-            }
-        } catch (e: Exception) {
-            println("Error Hapus: ${e.message}")
-        }
+        val resp: Response<Void> = repositoryDataSiswa.hapusSatuSiswa(idSiswa)
+        if (resp.isSuccessful) { println("Sukses Hapus Data") }
     }
 }
