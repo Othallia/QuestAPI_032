@@ -1,4 +1,4 @@
-package com.example.questapi_032.uicontroller.viewmodel
+package com.example.questapi_032.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,7 +18,6 @@ sealed interface StatusUiSiswa {
 }
 
 class HomeViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : ViewModel() {
-
     var listSiswa: StatusUiSiswa by mutableStateOf(StatusUiSiswa.Loading)
         private set
 
@@ -29,13 +28,12 @@ class HomeViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : View
     fun loadSiswa() {
         viewModelScope.launch {
             listSiswa = StatusUiSiswa.Loading
-            listSiswa = try {
-                // Saya sesuaikan jadi getSiswa() agar cocok dengan Repository kamu
-                StatusUiSiswa.Success(repositoryDataSiswa.getSiswa())
+            try {
+                listSiswa = StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
             } catch (e: IOException) {
-                StatusUiSiswa.Error
+                listSiswa = StatusUiSiswa.Error
             } catch (e: HttpException) {
-                StatusUiSiswa.Error
+                listSiswa = StatusUiSiswa.Error
             }
         }
     }
