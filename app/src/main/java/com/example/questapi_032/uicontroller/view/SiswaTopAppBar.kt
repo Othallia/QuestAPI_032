@@ -1,4 +1,4 @@
-package com.example.questapi_032.uicontroller.view
+package com.example.questapi_032.view
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -31,7 +31,7 @@ fun SiswaTopAppBar(
                 IconButton(onClick = navigateUp) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.back)
+                        contentDescription = stringResource(id = R.string.back)
                     )
                 }
             }
