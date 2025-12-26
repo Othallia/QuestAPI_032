@@ -12,7 +12,7 @@ import retrofit2.HttpException
 import java.io.IOException
 
 sealed interface StatusUiSiswa {
-    data class Success(val siswa: List<DataSiswa>) : StatusUiSiswa
+    data class Success(val siswa: List<DataSiswa> = listOf()) : StatusUiSiswa
     object Error : StatusUiSiswa
     object Loading : StatusUiSiswa
 }
@@ -28,12 +28,12 @@ class HomeViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : View
     fun loadSiswa() {
         viewModelScope.launch {
             listSiswa = StatusUiSiswa.Loading
-            try {
-                listSiswa = StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
+            listSiswa = try {
+                StatusUiSiswa.Success(repositoryDataSiswa.getDataSiswa())
             } catch (e: IOException) {
-                listSiswa = StatusUiSiswa.Error
+                StatusUiSiswa.Error
             } catch (e: HttpException) {
-                listSiswa = StatusUiSiswa.Error
+                StatusUiSiswa.Error
             }
         }
     }
