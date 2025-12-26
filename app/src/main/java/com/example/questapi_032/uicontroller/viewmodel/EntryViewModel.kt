@@ -10,7 +10,7 @@ import com.example.questapi_032.modeldata.toDataSiswa
 import com.example.questapi_032.repositori.RepositoryDataSiswa
 import retrofit2.Response
 
-class EntryViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : ViewModel() {
+class EntryViewModel(private val repositoryDataSiswa: RepositoryDataSiswa): ViewModel() {
     var uiStateSiswa by mutableStateOf(UIStateSiswa())
         private set
 
@@ -29,11 +29,11 @@ class EntryViewModel(private val repositoryDataSiswa: RepositoryDataSiswa) : Vie
 
     suspend fun addSiswa() {
         if (validasiInput()) {
-            val response: Response<Void> = repositoryDataSiswa.postDataSiswa(uiStateSiswa.detailSiswa.toDataSiswa())
-            if (response.isSuccessful) {
-                println("Sukses Tambah Data: ${response.message()}")
+            val sip: Response<Void> = repositoryDataSiswa.postDataSiswa(uiStateSiswa.detailSiswa.toDataSiswa())
+            if (sip.isSuccessful) {
+                println("Sukses Tambah Data : ${sip.message()}")
             } else {
-                println("Gagal tambah data: ${response.errorBody()}")
+                println("Gagal tambah data : ${sip.errorBody()}")
             }
         }
     }
