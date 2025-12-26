@@ -1,4 +1,4 @@
-package com.example.questapi_032.uicontroller.viewmodel
+package com.example.questapi_032.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,3 +48,16 @@ class DetailViewModel(
         }
     }
 
+    suspend fun hapusSatuSiswa() {
+        try {
+            val response: Response<Void> = repositoryDataSiswa.hapusSatuSiswa(idSiswa)
+            if (response.isSuccessful) {
+                println("Sukses Hapus Data: ${response.message()}")
+            } else {
+                println("Gagal Hapus Data: ${response.errorBody()}")
+            }
+        } catch (e: Exception) {
+            println("Error Hapus: ${e.message}")
+        }
+    }
+}
