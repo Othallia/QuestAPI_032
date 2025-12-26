@@ -49,3 +49,21 @@ class EditViewModel(
         }
     }
 
+    suspend fun editSatuSiswa() {
+        if (validasiInput(uiStateSiswa.detailSiswa)) {
+            try {
+                val response: Response<Void> = repositoryDataSiswa.editSatuSiswa(
+                    idSiswa,
+                    uiStateSiswa.detailSiswa.toDataSiswa()
+                )
+                if (response.isSuccessful) {
+                    println("Update Sukses: ${response.message()}")
+                } else {
+                    println("Update Gagal: ${response.errorBody()}")
+                }
+            } catch (e: Exception) {
+                println("Update Error: ${e.message}")
+            }
+        }
+    }
+}
